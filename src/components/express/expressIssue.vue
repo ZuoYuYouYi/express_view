@@ -15,6 +15,7 @@
         <x-textarea title="快递地址：" v-model="expressAddress" :placeholder="'请输入快递地址'"
                     :show-counter="true" :max="30" autosize></x-textarea>
       </group>
+      <br/>
       <group title="送达地址">
         <selector ref="valueMapRef" placeholder="请选择楼号" v-model="building" title="楼号"
                   :options="buildingArray"/>
@@ -23,6 +24,13 @@
         <cell-box v-show="building !== ''" v-text="'您的地址为：' + goalAddress"
                   style="color: #898989;"></cell-box>
       </group>
+      <br/>
+      <group title="快递取货号仅仅用于短信通知，请放心填写">
+        <x-input title="快递取货号" v-model="expressCode" placeholder="请输入您的取货号" novalidate
+                 @on-blur="rewardInspect"
+                 text-align="center" placeholder-align="center" :required="true"></x-input>
+      </group>
+      <br/>
       <group title="快递重量">
         <checker
           v-model="weight"
@@ -36,11 +44,13 @@
           </checker-item>
         </checker>
       </group>
+      <br/>
       <group>
         <x-input title="悬赏金额" v-model="reward" :placeholder="rewardSuggest" novalidate
-                 :show-clear="true" @on-blur="rewardInspect"
+                 @on-blur="rewardInspect"
                  text-align="center" placeholder-align="center" :required="true"></x-input>
       </group>
+      <br/>
       <group title="领取者性别限制">
         <checker v-model="sex" default-item-class="checker-item-radius"
                  selected-item-class="checker-item-selected-radius" :radio-required="true">
@@ -49,6 +59,7 @@
           <checker-item value="仅限女" class="checker-style-radius">仅限女</checker-item>
         </checker>
       </group>
+      <br/>
       <group>
         <x-textarea title="备注：" v-model="remark" :placeholder="'请输入备注信息'"
                     :show-counter="true"
@@ -158,7 +169,7 @@
     },
     data () {
       return {
-        showHideOnBlur: true,
+        showHideOnBlur: false,
         expressNameList: dataJson.pickerExpressNameList,
         expressName: [],
         supplementAddress: '',
@@ -170,6 +181,7 @@
         building: '',
         weight: '',
         reward: '',
+        expressCode: '',
         rewardSuggest: '请输入悬赏金额（元）',
         weightList: dataJson.weightList,
         userName: '',
@@ -245,10 +257,15 @@
           this.$vux.toast.text('请设置报酬金额', 'middle')
           return
         }
+        if (this.expressCode === ''){
+          this.$vux.toast.text('请输入您的取货号', 'middle')
+          return
+        }
         let data = new FormData()
         data.append('expressName', this.expressName[0])
         data.append('expressGoalAddress', this.goalAddress)
         data.append('expressAddress', this.expressAddress)
+        data.append('expressCode', this.expressCode)
         data.append('expressReward', this.reward)
         data.append('expressRemark', this.remark)
         data.append('expressWeight', this.weight)
@@ -292,11 +309,15 @@
     created () {
       this.userName = this.$store.getters.getUser.username
       this.$http.get('express/count').then(response => {
-        if (response.status !== 200) {
+        if (response.data.status === 200) {
+          this.count = response.data.count
+          this.rewardSum = response.data.rewardSum
+          this.showHideOnBlur = true
           return
         }
-        this.count = response.data.count
-        this.rewardSum = response.data.rewardSum
+        if (!this.userName) {
+          this.showConfirm = true
+        }
       }).catch(error => {
         this.$vux.toast.text('未知错误' + error, 'middle')
       })
@@ -373,7 +394,7 @@
     text-align: center;
     border-radius: 3px;
     border: 1px solid #ccc;
-    background-color: #fff;
+    background-color: #F7F7FA;
     margin-right: 6px;
   }
 

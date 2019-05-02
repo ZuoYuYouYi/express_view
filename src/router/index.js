@@ -23,6 +23,8 @@ const DeliverymanIndent = () => import('@/components/me/deliverymanIndent').then
   deliverymanIndent => deliverymanIndent.default)
 const Criteria = () => import ('@/components/me/criteria').then(
   criteria => criteria.default)
+const Register = () => import ('@/components/register').then(
+  register => register.default)
 
 Vue.use(Router)
 
@@ -125,6 +127,15 @@ export default new Router({
       name: 'login',
       path: '/login',
       component: Login,
+      meta: {
+        allowBack: true
+      }
+    },
+    // 注册
+    {
+      name: 'register',
+      path: '/register',
+      component: Register,
       meta: {
         allowBack: true
       }

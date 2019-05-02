@@ -7,7 +7,7 @@
                  :auto-upload="false" :limit="1" :multiple="false" name="file"
                  :disabled="fileListLength !== 0 || isCriteria" ref="upload" accept="image">
         <x-button style="margin-left: 10px;" slot="trigger" class="x_button" action-type="button"
-                  mini :disabled="fileListLength !== 0 || isCriteria"
+                  mini :disabled="fileListLength !== 0 || isCriteria || user.securityuserIsvalid"
                   type="primary">选择照片
         </x-button>
         <x-button style="margin-left: 10px;" @click.native="clearFile" class="x_button"
@@ -45,7 +45,8 @@
         uploadURL: this.$http.defaults.baseURL + 'criteriaUser',
         dialogImageURL: '',
         fileListLength: 0,
-        isCriteria: false
+        isCriteria: false,
+        user:{}
       }
     },
     methods: {
@@ -79,11 +80,10 @@
       }
     },
     computed: {
-      mobileWith () {
-        return document.body.clientWidth
-      }
+
     },
     created () {
+      this.user = this.$store.getters.getUser
       EventBus.$emit('appMark', {
         item: 1
       })

@@ -110,7 +110,11 @@
     methods: {
       toExpressIndent () {
         if (!this.user.username) {
-          this.$vux.toast.text('你还未登录', 'middle')
+          this.$vux.toast.text('您还未登录', 'middle')
+          return
+        }
+        if (!this.user.securityuserIsvalid) {
+          this.$vux.toast.text('您还未经过实名审核', 'middle')
           return
         }
         this.$router.push({name: 'expressIndent'})
@@ -118,6 +122,10 @@
       toDeliveryManIndent () {
         if (!this.user.username) {
           this.$vux.toast.text('你还未登录', 'middle')
+          return
+        }
+        if (!this.user.securityuserIsvalid) {
+          this.$vux.toast.text('您还未经过实名审核', 'middle')
           return
         }
         this.$router.push({name: 'deliverymanIndent'})
@@ -177,7 +185,9 @@
         this.messageNum = isValid ? 0 : 1
         this.messageText = !isValid ? '请您进行实名审核' : '您已完成实名审核'
         this.$http.get('express/count/' + username).then(response => {
-          if (response.status !== 200) {
+          if (response.data.status !== 200) {
+            this.expressCount = 0
+            this.deliverymanCount = 0
             return
           }
           this.expressCount = response.data.expressCount

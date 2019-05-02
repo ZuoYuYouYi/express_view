@@ -166,7 +166,8 @@
         express: {},
         showConfirm: false,
         showLogin: false,
-        userName: ''
+        userName: '',
+        user: {}
       }
     },
     methods: {
@@ -197,6 +198,7 @@
         this.expressList.sort(mathSort)
       },
       chooseExpress () {
+
         this.showConfirm = false
         let data = new FormData()
         data.append('expressSecurityuserId', this.express.expressSecurityuserId)
@@ -239,6 +241,7 @@
     },
     created () {
       this.getExpressList()
+      this.user = this.$store.getters.getUser
       this.userName = this.$store.getters.getUser.username
     },
     mounted () {
