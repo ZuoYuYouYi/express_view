@@ -2,6 +2,23 @@
   <div style="height: 100%">
     <view-box ref="ViewBox">
       <loading v-model="isLoading"></loading>
+      <div v-transfer-dom>
+        <x-dialog v-model="showScrollBox" class="dialog-content">
+          <divider>免责声明</divider>
+          <div class="content-box">
+            <card>
+              <div slot="content" class="card-padding">
+                <span v-html="statement"></span>
+                <divider>
+                  <check-icon :value.sync="isConsent">我已阅读并认可以上承诺</check-icon>
+                </divider>
+              </div>
+            </card>
+
+          </div>
+          <x-button :disabled="!isConsent" @click.native="showScrollBox = false">同意</x-button>
+        </x-dialog>
+      </div>
       <router-view></router-view>
       <div style="height: auto"></div>
       <tabbar slot="bottom" v-model="item" @on-index-change="changeValue">
@@ -20,10 +37,17 @@
 
 <script>
   import {
+    Group,
+    CheckIcon,
+    Card,
     Tabbar,
     TabbarItem,
     ViewBox,
-    Loading
+    Loading,
+    XDialog,
+    XButton,
+    Divider,
+    TransferDomDirective as TransferDom
   } from 'vux'
 
   import {mapState} from 'vuex'
@@ -32,19 +56,33 @@
   import expressIcon from '@/assets/images/kuaidi_.png'
   import meIcon from '@/assets/images/wode.png'
 
+  const dataJson = require('../src/assets/data')
+
   export default {
     name: 'App',
+    directives: {
+      TransferDom
+    },
     components: {
+      Group,
+      CheckIcon,
+      Card,
+      XDialog,
+      XButton,
       Tabbar,
       TabbarItem,
       ViewBox,
-      Loading
+      Loading,
+      Divider
     },
     data () {
       return {
         expressIcon: expressIcon,
         meIcon: meIcon,
-        item: 0
+        item: 0,
+        showScrollBox: false,
+        statement: dataJson.statement,
+        isConsent: false
       }
     },
     methods: {
@@ -62,6 +100,9 @@
           this.$store.commit('updateUser', {
             user: user
           })
+        }
+        if (response.data.status === 500) {
+          this.showScrollBox = true
         }
 
       }).catch(error => {
@@ -97,6 +138,28 @@
 
 <style scoped lang="less">
   @import "~vux/src/styles/reset.less";
+  @import '~vux/src/styles/close';
 
+  .dialog-content {
 
+    .weui-dialog {
+      border-radius: 8px;
+      padding-bottom: 8px;
+    }
+
+    .content-box {
+      height: 360px;
+      padding: 15px 0;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+
+  }
+
+  .card-padding {
+    padding: 10px;
+    text-align: left;
+    line-height: 1.6;
+    size: A4;
+  }
 </style>

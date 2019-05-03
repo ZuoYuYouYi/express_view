@@ -65,7 +65,9 @@
                     :show-counter="true"
                     :max="100" autosize></x-textarea>
       </group>
-      <br/>
+      <divider>
+        <check-icon :value.sync="isConsent">我同意货到后支付酬金</check-icon>
+      </divider>
       <flexbox>
         <flexbox-item>
           <x-button @click.native="reset" class="mini-button" action-type="button" plain
@@ -74,7 +76,7 @@
         </flexbox-item>
         <flexbox-item>
           <x-button @click.native="submitExpress" class="mini-button" action-type="button" plain
-                    type="primary">提交
+                    type="primary" :disabled="!isConsent">提交
           </x-button>
         </flexbox-item>
       </flexbox>
@@ -135,7 +137,8 @@
     Cell,
     Checker,
     CheckerItem,
-    CellBox
+    CellBox,
+    CheckIcon
   } from 'vux'
 
   import Moment from 'moment'
@@ -165,7 +168,8 @@
       Cell,
       Checker,
       CheckerItem,
-      CellBox
+      CellBox,
+      CheckIcon
     },
     data () {
       return {
@@ -187,7 +191,8 @@
         userName: '',
         sex: '',
         count: 0,
-        rewardSum: 0.00
+        rewardSum: 0.00,
+        isConsent: false
       }
     },
     computed: {
@@ -225,8 +230,14 @@
         this.reward = ''
         this.supplementAddress = ''
         this.userName = ''
+        this.expressCode = ''
+        this.weight = ''
+        this.sex = ''
       },
       rewardInspect () {
+        if (this.reward === ''){
+          return
+        }
         let isMath = /^[0-9]+\.?[0-9]*$/
         if (!isMath.test(this.reward)) {
           this.toastShow = true

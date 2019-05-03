@@ -90,7 +90,6 @@
   import {
     XHeader,
     TransferDom,
-    Confirm,
     XTable,
     Popup,
     FormPreview,
@@ -107,7 +106,6 @@
     },
     components: {
       XHeader,
-      Confirm,
       XTable,
       Popup,
       FormPreview,
