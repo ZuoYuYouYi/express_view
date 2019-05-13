@@ -139,6 +139,7 @@
 <style scoped lang="less">
   @import "~vux/src/styles/reset.less";
   @import '~vux/src/styles/close';
+  @import '~vux/src/styles/1px.less';
 
   .dialog-content {
 

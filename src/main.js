@@ -19,7 +19,7 @@ Vue.use(Upload)
 Vue.config.productionTip = false
 
 // axios
-// AjaxPlugin.$http.defaults.baseURL = 'http://39.107.244.193:8080/express/'
+// AjaxPlugin.$http.defaults.baseURL = 'http://39.107.244.193:8080/'
 AjaxPlugin.$http.defaults.baseURL = 'http://localhost:8080/'
 // 务必开启携带cookie
 AjaxPlugin.$http.defaults.withCredentials = true

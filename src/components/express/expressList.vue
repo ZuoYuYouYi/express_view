@@ -108,7 +108,7 @@
           </x-table>
           <br/>
           <div>
-            <x-button @click.native="showConfirm = true" class="x_button" plain type="primary">
+            <x-button style="font-size: small" @click.native="showConfirm = true" class="x_button" plain type="primary">
               接受
             </x-button>
           </div>

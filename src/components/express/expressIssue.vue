@@ -1,58 +1,73 @@
 <template>
   <div>
     <div>
-      <group>
-        <popup-picker :popup-title="'请选择您的快递名称'" :title="'选择快递名称'" :data="expressNameList"
+      <group style="font-size: small">
+        <popup-picker style="font-size: small" :popup-title="'请选择您的快递名称'" :title="'选择快递名称'"
+                      :data="expressNameList"
                       v-model="expressName" :placeholder="'请选择快递名称'">
-          <template slot="title" slot-scope="props"><!-- use scope="props" when vue < 2.5.0 -->
-            <span :class="props.labelClass" :style="props.labelStyle" style="height:24px;">
-            <span style="vertical-align:middle;">快递名称</span>
+          <template style="font-size: small" slot="title" slot-scope="props">
+            <!-- use scope="props" when vue < 2.5.0 -->
+            <span :class="props.labelClass" :style="props.labelStyle"
+                  style="height:24px;font-size: small">
+            <span style="vertical-align:middle;font-size: small">快递名称</span>
           </span>
           </template>
         </popup-picker>
       </group>
-      <group>
+      <group style="font-size: small">
         <x-textarea title="快递地址：" v-model="expressAddress" :placeholder="'请输入快递地址'"
-                    :show-counter="true" :max="30" autosize></x-textarea>
+                    :show-counter="true" :max="30" autosize style="font-size: small"></x-textarea>
       </group>
       <br/>
-      <group title="送达地址">
-        <selector ref="valueMapRef" placeholder="请选择楼号" v-model="building" title="楼号"
+      <group title="送达地址" style="font-size: small">
+        <selector style="font-size: small" ref="valueMapRef" placeholder="请选择楼号" v-model="building"
+                  title="楼号"
                   :options="buildingArray"/>
-        <x-input :readonly="building === ''" title="地址补充：" v-model="supplementAddress"
+        <x-input style="font-size: small" :readonly="building === ''" title="地址补充："
+                 v-model="supplementAddress"
                  :placeholder="building === '' ? '请先选择楼号':'请输入您的地址'" autosize></x-input>
         <cell-box v-show="building !== ''" v-text="'您的地址为：' + goalAddress"
-                  style="color: #898989;"></cell-box>
+                  style="color: #898989;font-size: small"></cell-box>
       </group>
       <br/>
-      <group title="快递取货号仅仅用于短信通知，请放心填写">
+      <group title="仅用于短信通知，请放心填写" style="font-size: small">
         <x-input title="快递取货号" v-model="expressCode" placeholder="请输入您的取货号" novalidate
-                 @on-blur="rewardInspect"
+                 style="font-size: small"
                  text-align="center" placeholder-align="center" :required="true"></x-input>
       </group>
       <br/>
-      <group title="快递重量">
+      <group title="（此为快递收货单上的收货人）仅用于短信通知，请放心填写" style="font-size: small">
+        <x-input title="收货人" v-model="expressUserName" placeholder="请输入收货人名称" novalidate
+                 style="font-size: small"
+                 text-align="center" placeholder-align="center" :required="true"></x-input>
+      </group>
+      <br/>
+      <group title="快递重量" style="font-size: small">
         <checker
+          style="font-size: small"
           v-model="weight"
           default-item-class="checker-item"
           selected-item-class="checker-item-selected"
           @on-change="setReward"
           :radio-required="true"
         >
-          <checker-item class="checker-style" v-for="weight in weightList" :key="weight"
+          <checker-item style="font-size: small" class="checker-style" v-for="weight in weightList"
+                        :key="weight"
                         :value="weight">{{ weight }}
           </checker-item>
         </checker>
       </group>
       <br/>
-      <group>
-        <x-input title="悬赏金额" v-model="reward" :placeholder="rewardSuggest" novalidate
+      <group style="font-size: small">
+        <x-input style="font-size: small" title="悬赏金额" v-model="reward" :placeholder="rewardSuggest"
+                 novalidate
                  @on-blur="rewardInspect"
                  text-align="center" placeholder-align="center" :required="true"></x-input>
       </group>
       <br/>
-      <group title="领取者性别限制">
+      <group title="领取者性别限制" style="font-size: small">
         <checker v-model="sex" default-item-class="checker-item-radius"
+                 style="font-size: small"
                  selected-item-class="checker-item-selected-radius" :radio-required="true">
           <checker-item value="仅限男" class="checker-style-radius">仅限男</checker-item>
           <checker-item value="不限" class="checker-style-radius">不限</checker-item>
@@ -60,30 +75,30 @@
         </checker>
       </group>
       <br/>
-      <group>
+      <group style="font-size: small">
         <x-textarea title="备注：" v-model="remark" :placeholder="'请输入备注信息'"
-                    :show-counter="true"
+                    :show-counter="true" style="font-size: small"
                     :max="100" autosize></x-textarea>
       </group>
       <divider>
-        <check-icon :value.sync="isConsent">我同意货到后支付酬金</check-icon>
+        <check-icon :value.sync="isConsent" style="font-size: small">我同意货到后支付酬金</check-icon>
       </divider>
       <flexbox>
         <flexbox-item>
           <x-button @click.native="reset" class="mini-button" action-type="button" plain
-                    type="warn">清空
+                    type="warn" style="font-size: small">清空
           </x-button>
         </flexbox-item>
         <flexbox-item>
           <x-button @click.native="submitExpress" class="mini-button" action-type="button" plain
-                    type="primary" :disabled="!isConsent">提交
+                    type="primary" :disabled="!isConsent" style="font-size: small">提交
           </x-button>
         </flexbox-item>
       </flexbox>
     </div>
     <div class="space"></div>
     <toast v-model="toastShow" type="warn" position="top">金额不合理</toast>
-    <div v-transfer-dom>
+    <!--<div v-transfer-dom>
       <x-dialog v-model="showHideOnBlur" hide-on-blur class="dialog">
         <div class="dialog-box">
           <div class="countupGroup">
@@ -103,7 +118,7 @@
           </div>
         </div>
       </x-dialog>
-    </div>
+    </div>-->
     <div v-transfer-dom>
       <confirm
         v-model="showConfirm"
@@ -186,6 +201,7 @@
         weight: '',
         reward: '',
         expressCode: '',
+        expressUserName: '',
         rewardSuggest: '请输入悬赏金额（元）',
         weightList: dataJson.weightList,
         userName: '',
@@ -233,9 +249,14 @@
         this.expressCode = ''
         this.weight = ''
         this.sex = ''
+        this.expressUserName = ''
       },
       rewardInspect () {
-        if (this.reward === ''){
+        if (this.reward === '') {
+          return
+        }
+        let isDouble = /^[0-9]+\.[0-9]{2}$/
+        if (isDouble.test(this.reward)) {
           return
         }
         let isMath = /^[0-9]+\.?[0-9]*$/
@@ -256,6 +277,7 @@
         }
         let isFloat = /^\d+|\d+\.\d$/
         if (isFloat.test(this.reward)) {
+          console.log('999')
           this.reward = this.reward + '0'
         }
       },
@@ -268,7 +290,7 @@
           this.$vux.toast.text('请设置报酬金额', 'middle')
           return
         }
-        if (this.expressCode === ''){
+        if (this.expressCode === '') {
           this.$vux.toast.text('请输入您的取货号', 'middle')
           return
         }
@@ -277,6 +299,7 @@
         data.append('expressGoalAddress', this.goalAddress)
         data.append('expressAddress', this.expressAddress)
         data.append('expressCode', this.expressCode)
+        data.append('expressUserName', this.expressUserName)
         data.append('expressReward', this.reward)
         data.append('expressRemark', this.remark)
         data.append('expressWeight', this.weight)
@@ -310,28 +333,28 @@
           this.showConfirm = false
         }, 1000)
       },
-      closeBlur () {
-        this.showHideOnBlur = false
-        if (!this.userName) {
-          this.showConfirm = true
-        }
-      }
+      // closeBlur () {
+      //   this.showHideOnBlur = false
+      //   if (!this.userName) {
+      //     this.showConfirm = true
+      //   }
+      // }
     },
     created () {
       this.userName = this.$store.getters.getUser.username
-      this.$http.get('express/count').then(response => {
-        if (response.data.status === 200) {
-          this.count = response.data.count
-          this.rewardSum = response.data.rewardSum
-          this.showHideOnBlur = true
-          return
-        }
+      // this.$http.get('express/count').then(response => {
+      //   if (response.data.status === 200) {
+      //     this.count = response.data.count
+      //     this.rewardSum = response.data.rewardSum
+      //     this.showHideOnBlur = true
+      //     return
+      //   }
         if (!this.userName) {
           this.showConfirm = true
         }
-      }).catch(error => {
-        this.$vux.toast.text('未知错误' + error, 'middle')
-      })
+      // }).catch(error => {
+      //   this.$vux.toast.text('未知错误' + error, 'middle')
+      // })
     },
     destroyed () {
       this.reset()
@@ -419,7 +442,7 @@
   }
 
   .checker-item-radius {
-    width: 60px;
+    width: 50px;
     height: 40px;
     border: 1px solid #ccc;
     display: inline-block;
@@ -433,7 +456,8 @@
   }
 
   .checker-style-radius {
-    margin-left: 11%;
+    margin-left: 13%;
+    font-size: small;
   }
 
 </style>

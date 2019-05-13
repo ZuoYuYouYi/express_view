@@ -1,11 +1,11 @@
 <template>
   <div>
-    <divider style="font-size: 60px">
+    <divider style="font-size: x-large">
       <span>登录</span>
     </divider>
     <group>
       <x-input title="手机号" v-model="loginMobileNumber" placeholder="请输入手机号" novalidate
-               :show-clear="true" @on-blur="loginPhoneReg"
+               :show-clear="true" @on-blur="loginPhoneReg" style="height: 24px; font-size: small"
                mask="999 9999 9999" :max="13" is-type="china-mobile"
                text-align="center" placeholder-align="center" :icon-type="loginIconType">
         <img slot="label" style="padding-right:10px;display:block;" :src="phoneIcon" width="24"
@@ -14,7 +14,7 @@
     </group>
     <group>
       <x-input title="密码" v-model="loginPassWord" placeholder="请输入密码" novalidate
-               :show-clear="true" type="password"
+               :show-clear="true" type="password" style="height: 24px; font-size: small"
                text-align="center" placeholder-align="center">
         <img slot="label" style="padding-right:10px;display:block;" :src="passWordIcon" width="24"
              height="24" alt="手机号码">
@@ -23,7 +23,7 @@
 
     <divider style="color: #268BD2"><span @click="toRegister">我还没有账号</span></divider>
     <div>
-      <x-button @click.native="login" class="x_button" action-type="button" plain type="primary">
+      <x-button style="font-size: small" @click.native="login" class="x_button" action-type="button" plain type="primary">
         登录
       </x-button>
     </div>

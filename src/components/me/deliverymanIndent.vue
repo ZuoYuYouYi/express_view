@@ -159,6 +159,13 @@
       },
       selectDeliveryman () {
         this.$http.get('express/delivery/' + this.userName).then(response => {
+          let resultList = response.data.data
+          if (resultList.length !== 0) {
+            this.formatForPreview(resultList.sort((item1, item2) => {
+
+              return item2.expressDate - item1.expressDate
+            }))
+          }
           this.formatForPreview(response.data.data)
         }).catch(error => {
           this.$vux.toast.text('未知错误' + error, 'middle')

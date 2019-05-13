@@ -105,6 +105,10 @@
                     value: data.expressName
                   },
                   {
+                    label: '取货码',
+                    value: data.expressCode
+                  },
+                  {
                     label: '发布日期',
                     value: Moment(data.expressDate).format('YYYY-MM-DD HH:mm')
                   },
@@ -147,7 +151,10 @@
         this.$http.get('express/' + this.userName).then(response => {
           let resultList = response.data.data
           if (resultList.length !== 0) {
-            this.formatForPreview(resultList.reverse())
+            this.formatForPreview(resultList.sort((item1, item2) => {
+
+              return item2.expressDate - item1.expressDate
+            }))
           }
           this.formatForPreview(response.data.data)
         }).catch(error => {

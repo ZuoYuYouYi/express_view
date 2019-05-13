@@ -1,16 +1,16 @@
 <template>
   <div>
     <group title="审核照片要求" class="card-padding">
-      <p>
+      <p class="font-style">
         1、手持学生证，展示学生证信息一页，放于胸前。
       </p>
-      <p>
+      <p class="font-style">
         2、照片必须清晰，可看清学生证上的字。
       </p>
-      <p>
+      <p class="font-style">
         3、照片只需展示上半身即可，人像需有辨识度。
       </p>
-      <p>
+      <p class="font-style">
         4、审核时间约1～2个工作日。
       </p>
     </group>
@@ -20,16 +20,19 @@
                  :on-error="handlePictureCardError" :before-upload="beforeAvatarUpload"
                  :auto-upload="false" :limit="1" :multiple="false" name="file"
                  :disabled="fileListLength !== 0 || isCriteria" ref="upload" accept="image">
-        <x-button style="margin-left: 10px;" slot="trigger" class="x_button" action-type="button"
+        <x-button style="margin-left: 10px; font-size: small" slot="trigger" class="x_button"
+                  action-type="button"
                   mini
                   :disabled="Object.keys(audit).length === 0 ? false : !audit.auditFlag || fileListLength !== 0 || isCriteria || user.securityuserIsvalid"
                   type="primary">选择照片
         </x-button>
-        <x-button style="margin-left: 10px;" @click.native="clearFile" class="x_button"
+        <x-button style="margin-left: 10px; font-size: small" @click.native="clearFile"
+                  class="x_button"
                   action-type="button" mini plain :disabled="fileListLength === 0 || isCriteria"
                   type="primary">清除照片
         </x-button>
-        <x-button style="margin-left: 10px;" @click.native="submitImg" class="x_button"
+        <x-button style="margin-left: 10px; font-size: small" @click.native="submitImg"
+                  class="x_button"
                   action-type="button" mini :disabled="fileListLength === 0 || isCriteria"
                   type="warn">确认提交
         </x-button>
@@ -145,5 +148,9 @@
     text-align: left;
     line-height: 1.6;
     size: A4;
+  }
+
+  .font-style {
+    font-size: medium;
   }
 </style>

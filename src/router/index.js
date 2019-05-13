@@ -29,6 +29,7 @@ const Register = () => import ('@/components/register').then(
 Vue.use(Router)
 
 export default new Router({
+  base: 'express',
   routes: [
     // 首页重定向
     {

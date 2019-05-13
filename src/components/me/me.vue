@@ -1,48 +1,48 @@
 <template>
   <div>
     <group>
-      <cell title="账户" :is-link="isLink" :disabled="!isLink" style="font-size: 20px"
+      <cell title="账户" :is-link="isLink" :disabled="!isLink" style="font-size: medium"
             :link="{name: 'login'}">
-        <img slot="icon" width="60px" style="display:block;margin-right:20px;" :src="userIcon"
+        <img slot="icon" width="44px" style="display:block;margin-right:20px;" :src="userIcon"
              alt="user">
         <span class="vertical-middle" v-text="userName"></span>
       </cell>
-      <cell :title="!user.username ? '身份认证（未登录）' : '身份认证'" :disabled="!user.username"
+      <cell style="font-size: small" :title="!user.username ? '身份认证（未登录）' : '身份认证'" :disabled="!user.username"
             is-link :link="{name: 'criteria'}" class="cell-height">
         <div class="badge-value" v-if="user.username">
           <span class="vertical-middle" v-text="messageText"></span>
           <badge v-if="messageNum > 0" :text="messageNum"></badge>
         </div>
       </cell>
-      <cell :title="!user.username ? '通知手机号（未登录）' : '通知手机号'" :disabled="!user.username"
+      <cell style="font-size: small" :title="!user.username ? '通知手机号（未登录）' : '通知手机号'" :disabled="!user.username"
             is-link :link="{name: 'information'}"
             class="cell-height">
         <div class="badge-value">
         </div>
       </cell>
-      <card :header="{title: '我的订单信息'}" style="text-align: center">
+      <card  :header="{title: '我的订单信息'}" style="text-align: center">
         <div slot="content" class="card-message-flex card-message-content">
-          <div class="vux-1px-r" @click="toExpressIndent">
+          <div class="vux-1px-r" @click="toExpressIndent" style="font-size: small">
             <span>{{ expressCount }}</span>
             <br/>
             快递订单
           </div>
-          <div class="vux-1px-r" @click="toDeliveryManIndent">
+          <div class="vux-1px-r" @click="toDeliveryManIndent" style="font-size: small">
             <span>{{ deliverymanCount }}</span>
             <br/>
             代领订单
           </div>
         </div>
       </card>
-      <cell title="关于我们" is-link :link="{name: 'aboutMe'}" class="cell-height">
+      <cell style="font-size: small" title="关于我们" is-link :link="{name: 'aboutMe'}" class="cell-height">
         <div class="badge-value">
         </div>
       </cell>
-      <cell title="反馈建议" is-link :link="{name: 'suggest'}" class="cell-height">
+      <cell style="font-size: small" title="反馈建议" is-link :link="{name: 'suggest'}" class="cell-height">
         <div class="badge-value">
         </div>
       </cell>
-      <cell title="版本" class="cell-height">
+      <cell style="font-size: small" title="版本" class="cell-height">
         <div class="badge-value">
           <span class="vertical-middle">Version 1.0.0</span>
         </div>
@@ -50,7 +50,7 @@
     </group>
     <br/>
     <div v-show="!isLink">
-      <x-button @click.native="showConfirm = true" class="x_button" action-type="button" plain
+      <x-button style="font-size: small" @click.native="showConfirm = true" class="x_button" action-type="button" plain
                 type="warn">
         注销
       </x-button>
@@ -204,6 +204,7 @@
 
 <style lang="less" scoped>
   @import '~vux/src/styles/1px.less';
+
 
   .card-message-flex {
     display: flex;

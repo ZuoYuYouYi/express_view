@@ -1,14 +1,14 @@
 <template>
   <div>
-    <divider style="font-size: 30px">给我们一些建议或反馈</divider>
-    <group title="请写下您的建议或反馈">
+    <divider style="font-size: x-large">给我们一些建议或反馈</divider>
+    <group title="请写下您的建议或反馈" style="font-size: small">
       <x-textarea v-model="content" placeholder="请输入您的建议或反馈（最少10个字）"
-                  :show-counter="true"
+                  :show-counter="true"  style="font-size: small"
                   :max="300" :height="300"></x-textarea>
     </group>
     <divider></divider>
     <div>
-      <x-button :disabled="isDisabled" @click.native="showConfirm = true" class="x_button" plain
+      <x-button style="font-size: small" :disabled="isDisabled" @click.native="showConfirm = true" class="x_button" plain
                 type="primary">
         提交
       </x-button>

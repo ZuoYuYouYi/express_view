@@ -1,11 +1,11 @@
 <template>
   <div>
-    <divider style="font-size: 60px">
+    <divider style="font-size: medium">
       <span>注册</span>
     </divider>
     <group>
       <x-input title="手机号" v-model="registerMobileNumber" placeholder="请输入手机号" novalidate
-               :show-clear="true" @on-blur="registerPhoneReg"
+               :show-clear="true" @on-blur="registerPhoneReg" style="height: 24px; font-size: small"
                mask="999 9999 9999" :max="13" is-type="china-mobile"
                text-align="center" placeholder-align="center" :icon-type="registerIconType">
         <img slot="label" style="padding-right:10px;display:block;" :src="phoneIcon"
@@ -14,48 +14,45 @@
       </x-input>
     </group>
 
-    <br/>
     <group>
       <popup-picker :popup-title="'请选择您的学院名称'" :title="'选择学院名称'" :data="userCollegeList"
-                    v-model="userCollege" :placeholder="'请选择学院名称'">
-        <template slot="title" slot-scope="props"><!-- use scope="props" when vue < 2.5.0 -->
-          <span :class="props.labelClass" :style="props.labelStyle" style="height:24px;">
+                    v-model="userCollege" :placeholder="'请选择学院名称'" style="font-size: small">
+        <template slot="title" slot-scope="props" style="font-size: small">
+          <!-- use scope="props" when vue < 2.5.0 -->
+          <span :class="props.labelClass" :style="props.labelStyle"
+                style="height:24px;font-size: small">
             <span style="vertical-align:middle;">学院名称</span>
           </span>
         </template>
       </popup-picker>
     </group>
-    <br/>
     <group>
       <x-input title="专业" v-model="userSubject" placeholder="请输入您的就读专业" novalidate
-               @on-blur="userSubjectInspect"
+               @on-blur="userSubjectInspect" style="font-size: small"
                text-align="center" placeholder-align="center" :required="true"></x-input>
     </group>
-    <br/>
     <group>
       <x-input title="班级" v-model="userClass" placeholder="请输入您的班级" novalidate
-               @on-blur="userClassInspect"
+               @on-blur="userClassInspect" style="font-size: small"
                text-align="center" placeholder-align="center" :required="true"></x-input>
     </group>
-    <br/>
-    <group title="选择您的性别">
+    <group style="font-size: small" title="选择您的性别">
       <checker v-model="registerSex" default-item-class="checker-item"
                selected-item-class="checker-item-selected" :radio-required="true">
         <checker-item value="男" class="checker-style">男</checker-item>
         <checker-item value="女" class="checker-style">女</checker-item>
       </checker>
     </group>
-    <br/>
     <group>
       <x-input title="密码" v-model="registerPassWord" placeholder="请输入密码" novalidate
-               :show-clear="true" type="password"
+               :show-clear="true" type="password" style="height:24px; font-size: small"
                text-align="center" placeholder-align="center">
         <img slot="label" style="padding-right:10px;display:block;" :src="passWordIcon"
              width="24"
              height="24" alt="密码">
       </x-input>
       <x-input title="确认密码" v-model="registerToPassWord" placeholder="请再次确认密码" novalidate
-               :show-clear="true" type="password" text-align="center"
+               :show-clear="true" type="password" text-align="center" style="height:24px; font-size: small"
                placeholder-align="center" @on-blur="passWordPhoneReg"
                :equal-with="registerPassWord" :icon-type="passWordIconType">
         <img slot="label" style="padding-right:10px;display:block;" :src="passWordIcon"
@@ -67,16 +64,16 @@
     <group>
       <x-input v-model="registerVerification" title="验证码" placeholder="请输入验证码 " novalidate
                :show-clear="true" text-align="center" placeholder-align="right"
-               style="height: 36px">
+               style="height: 24px; font-size: small">
         <img slot="label" style="padding-right:10px;display:block;" :src="verificationIcon"
              width="24"
              height="24" alt="手机号码">
-        <x-button slot="right" type="primary">发送验证码</x-button>
+        <x-button slot="right" type="primary" style="font-size: small">发送验证码</x-button>
       </x-input>
     </group>
     <divider></divider>
     <div>
-      <x-button @click.native="register" class="x_button" action-type="button" plain
+      <x-button @click.native="register" style="font-size: small" class="x_button" action-type="button" plain
                 type="primary">注册
       </x-button>
     </div>
@@ -235,12 +232,12 @@
 
 
   .checker-item {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border: 1px solid #ccc;
     display: inline-block;
     border-radius: 50%;
-    line-height: 40px;
+    line-height: 30px;
     text-align: center;
   }
 
@@ -250,5 +247,6 @@
 
   .checker-style {
     margin-left: 26%;
+    font-size: small;
   }
 </style>
