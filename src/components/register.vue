@@ -63,12 +63,14 @@
 
     <group>
       <x-input v-model="registerVerification" title="验证码" placeholder="请输入验证码 " novalidate
-               :show-clear="true" text-align="center" placeholder-align="right"
+               :show-clear="true" text-align="center" placeholder-align="center"
                style="height: 24px; font-size: small">
         <img slot="label" style="padding-right:10px;display:block;" :src="verificationIcon"
              width="24"
              height="24" alt="手机号码">
-        <x-button slot="right" type="primary" style="font-size: small">发送验证码</x-button>
+        <x-button slot="right" type="primary" style="font-size: small" :disabled="isSendMessage"
+                  @click.native="sendMessage"> {{ buttonText }}
+        </x-button>
       </x-input>
     </group>
     <divider></divider>
@@ -122,9 +124,6 @@
     },
     data () {
       return {
-        loginMobileNumber: '',
-        loginPassWord: '',
-        loginIconType: '',
         registerMobileNumber: '',
         registerIconType: '',
         registerPassWord: '',
@@ -138,10 +137,31 @@
         phoneIcon: phoneIcon,
         passWordIcon: passWordIcon,
         verificationIcon: verificationIcon,
-        passWordIconType: ''
+        passWordIconType: '',
+        isSendMessage: false,
+        buttonText: '发送验证码'
       }
     },
     methods: {
+      sendMessage () {
+        this.$http.get('sendRegisterMessage/' + this.registerMobileNumber).then(response=>{
+          this.$vux.toast.text(response.data.message, 'middle')
+        }).catch(error => {
+          this.$vux.toast.text('未知错误' + error, 'middle')
+        })
+        this.isSendMessage = true
+        const _this = this // 声明一个变量指向Vue实例this，保证作用域一致
+        let time = 60
+        const timer = setInterval(() => {
+          _this.buttonText = time + '\ts'
+          time--
+          if (time < 0) {
+            _this.buttonText = '发送验证码'
+            _this.isSendMessage = false
+            clearInterval(timer)
+          }
+        }, 1000)
+      },
       registerPhoneReg () {
         let phoneNumberReg = /^[1][3-9][0-9]{9}$/
         let phoneNumber = this.registerMobileNumber.replace(/\s*/g, '')

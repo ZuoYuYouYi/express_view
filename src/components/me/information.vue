@@ -20,12 +20,14 @@
              height="24" alt="手机号码">
       </x-input>
       <x-input v-model="updateVerification" title="验证码" placeholder="请输入验证码 " novalidate
-               :show-clear="true" text-align="center" placeholder-align="right"
+               :show-clear="true" text-align="center" placeholder-align="center"
                style="height: 24px; font-size: small">
         <img slot="label" style="padding-right:10px;display:block;" :src="verificationIcon"
              width="24"
              height="24" alt="手机号码">
-        <x-button slot="right" type="primary" style="font-size: small">发送验证码</x-button>
+        <x-button slot="right" type="primary" style="font-size: small" :disabled="isSendMessage"
+                  @click.native="sendMessage"> {{ buttonText }}
+        </x-button>
       </x-input>
     </group>
     <divider></divider>
@@ -67,12 +69,34 @@
         updateMobileNumber: '',
         updateIconType: '',
         updateVerification: '',
+        isSendMessage: false,
+        buttonText: '发送验证码'
       }
     },
+    computed: {},
     methods: {
       clearMessage () {
         this.updateMobileNumber = ''
         this.updateVerification = ''
+      },
+      sendMessage () {
+        this.$http.get('sendUpdatePhoneMessage/' + this.updateMobileNumber).then(response=>{
+          this.$vux.toast.text(response.data.message, 'middle')
+        }).catch(error => {
+          this.$vux.toast.text('未知错误' + error, 'middle')
+        })
+        this.isSendMessage = true
+        const _this = this // 声明一个变量指向Vue实例this，保证作用域一致
+        let time = 60
+        const timer = setInterval(() => {
+          _this.buttonText = time + '\ts'
+          time--
+          if (time < 0) {
+            _this.buttonText = '发送验证码'
+            _this.isSendMessage = false
+            clearInterval(timer)
+          }
+        }, 1000)
       },
       updatePhoneReg () {
         let phoneNumberReg = /^[1][3-9][0-9]{9}$/
@@ -87,6 +111,7 @@
         let data = new FormData()
         data.append('updateMobileNumber', this.updateMobileNumber)
         data.append('userName', this.$store.getters.getUser.username)
+        data.append('updateVerification', this.updateVerification)
         this.$http.post('updatePhone', data).then(response => {
           this.$vux.toast.text(response.data.message, 'middle')
           if (response.data.status === 200) {

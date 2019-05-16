@@ -7,20 +7,22 @@
              alt="user">
         <span class="vertical-middle" v-text="userName"></span>
       </cell>
-      <cell style="font-size: small" :title="!user.username ? '身份认证（未登录）' : '身份认证'" :disabled="!user.username"
+      <cell style="font-size: small" :title="!user.username ? '身份认证（未登录）' : '身份认证'"
+            :disabled="!user.username"
             is-link :link="{name: 'criteria'}" class="cell-height">
         <div class="badge-value" v-if="user.username">
           <span class="vertical-middle" v-text="messageText"></span>
           <badge v-if="messageNum > 0" :text="messageNum"></badge>
         </div>
       </cell>
-      <cell style="font-size: small" :title="!user.username ? '通知手机号（未登录）' : '通知手机号'" :disabled="!user.username"
+      <cell style="font-size: small" :title="!user.username ? '通知手机号（未登录）' : '通知手机号'"
+            :disabled="!user.username"
             is-link :link="{name: 'information'}"
             class="cell-height">
         <div class="badge-value">
         </div>
       </cell>
-      <card  :header="{title: '我的订单信息'}" style="text-align: center">
+      <card :header="{title: '我的订单信息'}" style="text-align: center">
         <div slot="content" class="card-message-flex card-message-content">
           <div class="vux-1px-r" @click="toExpressIndent" style="font-size: small">
             <span>{{ expressCount }}</span>
@@ -34,11 +36,13 @@
           </div>
         </div>
       </card>
-      <cell style="font-size: small" title="关于我们" is-link :link="{name: 'aboutMe'}" class="cell-height">
+      <cell style="font-size: small" title="关于我们" is-link :link="{name: 'aboutMe'}"
+            class="cell-height">
         <div class="badge-value">
         </div>
       </cell>
-      <cell style="font-size: small" title="反馈建议" is-link :link="{name: 'suggest'}" class="cell-height">
+      <cell style="font-size: small" title="反馈建议" is-link :link="{name: 'suggest'}"
+            class="cell-height">
         <div class="badge-value">
         </div>
       </cell>
@@ -50,7 +54,8 @@
     </group>
     <br/>
     <div v-show="!isLink">
-      <x-button style="font-size: small" @click.native="showConfirm = true" class="x_button" action-type="button" plain
+      <x-button style="font-size: small" @click.native="showConfirm = true" class="x_button"
+                action-type="button" plain
                 type="warn">
         注销
       </x-button>
@@ -173,6 +178,18 @@
         }
       }
 
+    },
+    beforeCreate () {
+      this.$http.get('getPrincipal').then(response => {
+        if (response.data.status === 200) {
+          let user = response.data.data
+          this.$store.commit('updateUser', {
+            user: user
+          })
+        }
+      }).catch(error => {
+        this.$vux.toast.text('未知错误' + error, 'middle')
+      })
     },
     created () {
       EventBus.$emit('appMark', {
